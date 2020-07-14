@@ -178,6 +178,11 @@
 		<artifactId>tigase-muc</artifactId>
 		<version>2.4.2-SNAPSHOT</version>
 	</dependency> -->
+<!--		<dependency>-->
+<!--			<groupId>com.shiku</groupId>-->
+<!--			<artifactId>shiku-tigase</artifactId>-->
+<!--			<version>1.2-SNAPSHOT</version>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>tigase</groupId>
 			<artifactId>tigase-utils</artifactId>

@@ -4,7 +4,7 @@
 
   <groupId>com.shiku</groupId>
   <artifactId>shiku-tigase</artifactId>
-  <version>1.1</version>
+	<version>1.1</version>
   <packaging>jar</packaging>
 
   <name>shiku-tigase</name>
