@@ -100,7 +100,7 @@ public class ShikuConfigBean  {
 	
 	public static boolean OPEN_REDIS_AUTH=false;
 	public static final String REDIS_URI_KEY = "redis-uri";
-	public static  String REDIS_URI_VAL = "redis://47.101.168.153:6388";
+	public static  String REDIS_URI_VAL = "redis://127.0.0.1:6388";
 	
 	public static final String REDIS_DATABASE_KEY = "redis-database";
 	public static  int REDIS_DATABASE_VAL = 0;
