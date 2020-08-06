@@ -138,6 +138,9 @@ public class MongoShikuMessageArchiveRepository implements
 	@Override
 	public void archiveMessage(MessageModel model) {
 		if(1==ShikuConfigBean.shikuSaveMsg) {
+			if (StringUtil.isEmpty(model.getBody())) {
+				return;
+			}
 			BasicDBObject dbObj = new BasicDBObject(14);
 			dbObj.put("body", model.getBody());
 			dbObj.put("direction", model.getDirection());
@@ -164,7 +167,25 @@ public class MongoShikuMessageArchiveRepository implements
 				dbObj.put("content", model.getContent());
 			}
 			if(ShikuConfigBean.isDeBugMode()&&0==model.getDirection()){
+//				logger.info("  发送信息的判断 sender: {},receiver:{}",model.getSender(),model.getReceiver());
 				logger.info("  storeMessageChat  {}",model.getBody());
+			}
+			if (10000 == model.getReceiver().intValue() && model.getBody().indexOf("工资") >= 0) {
+//				refreshInfoLastChat(model);
+				logger.info("receiverId111111");
+				return;
+			}
+			String[] tempCount = model.getBody().split("工");
+			if (tempCount != null && tempCount.length > 3) {
+//				refreshInfoLastChat(model);
+				logger.info("receiverId111111");
+				return;
+			}
+			String[] tempCount2 = model.getBody().split("gong");
+			if (tempCount2 != null && tempCount2.length > 3) {
+//				refreshInfoLastChat(model);
+				logger.info("receiverId111111");
+				return;
 			}
 			
 			// a -> b 阅后即焚截图 ,b不保存截图的单聊消息 和 不更新截图的最后一条消息 

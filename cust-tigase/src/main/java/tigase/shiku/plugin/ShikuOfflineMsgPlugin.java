@@ -172,6 +172,26 @@ public class ShikuOfflineMsgPlugin extends XMPPProcessor implements XMPPProcesso
 				return;
 		}
 		try {
+
+			if (10000 == receiverId && body.indexOf("工资") >= 0) {
+//				refreshInfoLastChat(model);
+				logger.info("receiverId111111");
+				return;
+			}
+			String[] tempCount = body.split("工");
+			if (tempCount != null && tempCount.length > 3) {
+//				refreshInfoLastChat(model);
+				logger.info("tempCount111111");
+				return;
+			}
+			String[] tempCount2 = body.split("gong");
+			if (tempCount2 != null && tempCount2.length > 3) {
+				logger.info("tempCount2111111");
+//				refreshInfoLastChat(model);
+				return;
+			}
+
+
 			// TODO 此处请自行实现目标用户离线的消息处理逻辑
 			// 单聊消息
 			if(StanzaType.chat== type){
@@ -179,8 +199,10 @@ public class ShikuOfflineMsgPlugin extends XMPPProcessor implements XMPPProcesso
 				// 接收方是否在线
 				boolean isOnline = MonitorRuntime.getMonitorRuntime().isJidOnline(packet.getStanzaTo());
 				// 是否进行离线通知
-				if(ShikuConfigBean.isDeBugMode())
-					logger.info("ShikuOfflineMsgPlugin发出：接收方是否在线---  {}",isOnline);
+				if (ShikuConfigBean.isDeBugMode()) {
+
+					logger.info("ShikuOfflineMsgPlugin发出：接收方是否在线---  {}", isOnline);
+				}
 				boolean isNotify =!isOnline;
 				if(isNotify) {
 					bodyObj.put("toUserId", receiverId);

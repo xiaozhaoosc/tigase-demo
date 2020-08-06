@@ -1,6 +1,7 @@
 package tigase.shiku.db;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.redisson.Redisson;
 import org.redisson.api.RBucket;
@@ -129,6 +130,32 @@ public class RedisService {
 		RList<String> list = redissonClient.getList(key);
 
 		return list.contains(roomJid);
+	}
+
+	/**
+	 * @param key
+	 * @param value
+	 */
+	public void setKeyValue(String key,String value){
+		RBucket<Object> rbucket = redissonClient.getBucket(key);
+		rbucket.set(value,Expire.DAY1, TimeUnit.SECONDS);
+	}
+
+	/**
+	 * @param key
+	 */
+	public String getKeyValue(String key){
+		RBucket<String> bucket = redissonClient.getBucket(key);
+		return bucket.get();
+	}
+
+	public interface Expire {
+		static final int DAY1 = 86400;
+		static final int DAY7 = 604800;
+		static final int HOUR12 = 43200;
+		static final int HOUR=3600;
+		static final int HALF_AN_HOUR=1800;
+		static final int MINUTE=60;
 	}
 
 }

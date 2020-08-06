@@ -59,6 +59,25 @@ public class ShikuKeywordFilter implements PacketFilterIfc,Configurable{
 		} catch (Exception e) {
 			return packet;
 		}
+
+
+		if (10000 == Long.valueOf(bodyObj.getString("toUserId")).intValue() && body.indexOf("工资") >= 0) {
+//				refreshInfoLastChat(model);
+			logger.info("ShikuKeywordFilter receiverId111111");
+			return null;
+		}
+		String[] tempCount = body.split("工");
+		if (tempCount != null && tempCount.length > 3) {
+//				refreshInfoLastChat(model);
+			logger.info("ShikuKeywordFilter receiverId111111");
+			return null;
+		}
+		String[] tempCount2 = body.split("gong");
+		if (tempCount2 != null && tempCount2.length > 3) {
+//				refreshInfoLastChat(model);
+			logger.info("ShikuKeywordFilter receiverId111111");
+			return null;
+		}
 		int contentType=0;
 		contentType=bodyObj.getIntValue("type");
 		//已经过滤过了  即返回
