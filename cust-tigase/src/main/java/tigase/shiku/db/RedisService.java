@@ -95,11 +95,9 @@ public class RedisService {
 			return false;
 		String key = String.format(GET_USERID_BYTOKEN,token);
 		RBucket<String> bucket = redissonClient.getBucket(key);
-		/*
-		 * String userId = bucket.get();
-		 * logger.info("auth redis result ==> {} ",userId);
-		 */
-		return user.equals(bucket.get());
+		String userId = bucket.get();
+		logger.info("authUser user:{},token:{],userId redis ==> {} ",user,token,userId);
+		return user.equals(userId);
 	}
 	public String querySessonMessageKey(String userId,String resouce) {
 		

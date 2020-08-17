@@ -76,7 +76,7 @@ public class ShikuConfigBean  {
 	 * 强制同步消息发送时间
 	 */
 	public static final String ShikuMsgSendTime_KEY="shikuMsgSendTime";
-	public static int shikuMsgSendTime=0;
+	public static int shikuMsgSendTime=1;
 	
 	public static String VIRTHOSTS=null;
 	
@@ -141,7 +141,8 @@ public class ShikuConfigBean  {
 
 		 isSaveSystemMsg=Integer.valueOf(System.getProperty(ShikuSaveMucMsg_KEY, "1"));
 
-		 shikuMsgSendTime=Integer.valueOf(System.getProperty(ShikuMsgSendTime_KEY, "0"));
+		 logger.info("shikuMsgSendTime强制为1");
+//		 shikuMsgSendTime=Integer.valueOf(System.getProperty(ShikuMsgSendTime_KEY, "1"));
 		 
 		 String debug=System.getProperty(shikuDeBug_KEY,"0");
 		  shikuDeBug=Integer.valueOf(debug);

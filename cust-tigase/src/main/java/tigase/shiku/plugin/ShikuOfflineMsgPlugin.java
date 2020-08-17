@@ -109,6 +109,8 @@ public class ShikuOfflineMsgPlugin extends XMPPProcessor implements XMPPProcesso
 	public void process(Packet packet, XMPPResourceConnection session, NonAuthUserRepository repo,
 			Queue<Packet> results, Map<String, Object> settings) throws XMPPException {
 		StanzaType type = packet.getType();
+
+//		logger.info("ShikuOfflineMsgPlugin process ,type{}",type);
 		if (session == null) {
 			return;
 		}else if (Message.ELEM_NAME!= packet.getElemName()) {
@@ -123,6 +125,7 @@ public class ShikuOfflineMsgPlugin extends XMPPProcessor implements XMPPProcesso
 			 */
 			return;
 		}
+//		logger.info("ShikuOfflineMsgPlugin process 1,type{}",type);
 		
 
 		// ignoring packets resent from c2s for redelivery as processing
@@ -135,7 +138,8 @@ public class ShikuOfflineMsgPlugin extends XMPPProcessor implements XMPPProcesso
 			return;
 		//BareJID sender_jid=packet.getStanzaFrom().getBareJID();
 		BareJID receiver_jid=packet.getStanzaTo().getBareJID();
-		
+
+//		logger.info("ShikuOfflineMsgPlugin process 2,type{}",type);
 		
 		
 		String body = packet.getElement().getChildCData(new String[] { "message", "body" });
@@ -152,14 +156,18 @@ public class ShikuOfflineMsgPlugin extends XMPPProcessor implements XMPPProcesso
 				return;
 			}
 		}
+//		logger.info("ShikuOfflineMsgPlugin process 3,type{},contextType",type,contextType);
 		contextType=bodyObj.getIntValue("type");
-		if(0==contextType)
+		if (0 == contextType) {
 			return;
+		}
 		//消息回执不处理
-		else if(26==contextType||27==contextType||200==contextType||201==contextType)
+		else if (26 == contextType || 27 == contextType || 200 == contextType || 201 == contextType) {
 			return;
+		}
 		objectId=bodyObj.getString("objectId");
-		
+
+//		logger.info("ShikuOfflineMsgPlugin process 4,type{},contextType",type,contextType);
 		long receiverId=0;
 		if(type == StanzaType.chat){
 			try {
@@ -168,33 +176,19 @@ public class ShikuOfflineMsgPlugin extends XMPPProcessor implements XMPPProcesso
 				logger.error("receiverId==parseLong--Fail--- {}",receiver_jid);
 			}
 				//系统推送 不离线通知
-			if(receiverId<100020)
+			if (receiverId < 100020) {
+
 				return;
+			}
 		}
+//		logger.info("ShikuOfflineMsgPlugin process 5,type{},contextType",type,contextType);
 		try {
 
-			if (10000 == receiverId && body.indexOf("工资") >= 0) {
-//				refreshInfoLastChat(model);
-				logger.info("receiverId111111");
-				return;
-			}
-			String[] tempCount = body.split("工");
-			if (tempCount != null && tempCount.length > 3) {
-//				refreshInfoLastChat(model);
-				logger.info("tempCount111111");
-				return;
-			}
-			String[] tempCount2 = body.split("gong");
-			if (tempCount2 != null && tempCount2.length > 3) {
-				logger.info("tempCount2111111");
-//				refreshInfoLastChat(model);
-				return;
-			}
-
-
+//			logger.info("此处请自行实现目标用户离线的消息处理逻辑,contextType{}",contextType);
 			// TODO 此处请自行实现目标用户离线的消息处理逻辑
 			// 单聊消息
-			if(StanzaType.chat== type){
+			if(StanzaType.chat== type || contextType == 997 || contextType == 996 || contextType == 995){
+//				logger.info("此处请自行实现目标用户离线的消息处理逻辑,contextType{}单聊消息",contextType);
 				// 用户离线、执行离线推送逻辑
 				// 接收方是否在线
 				boolean isOnline = MonitorRuntime.getMonitorRuntime().isJidOnline(packet.getStanzaTo());
@@ -223,6 +217,7 @@ public class ShikuOfflineMsgPlugin extends XMPPProcessor implements XMPPProcesso
 				}
 				
 			}else if(StanzaType.groupchat == type&&(objectId!=null||null!=receiver_jid)){
+//				logger.info("此处请自行实现目标用户离线的消息处理逻辑,contextType{}groupchat",contextType);
 				 if(contextType/100==9)
 						return;
 				bodyObj.put("isGroup", true);

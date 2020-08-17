@@ -60,45 +60,39 @@ public class ShikuKeywordFilter implements PacketFilterIfc,Configurable{
 			return packet;
 		}
 
+//		Double timeSend = bodyObj.getDouble("timeSend");
+//		timeSend = System.currentTimeMillis()/1000D;
+//		bodyObj.put("timeSend", timeSend);
+		if (ShikuConfigBean.shikuMsgSendTime == 1) {
+			packet = setNewTimeSend(packet, body, bodyObj);
+		}
+//		packet = setNewTimeSend(packet, body, bodyObj);
 
-		if (10000 == Long.valueOf(bodyObj.getString("toUserId")).intValue() && body.indexOf("工资") >= 0) {
-//				refreshInfoLastChat(model);
-			logger.info("ShikuKeywordFilter receiverId111111");
-			return null;
-		}
-		String[] tempCount = body.split("工");
-		if (tempCount != null && tempCount.length > 3) {
-//				refreshInfoLastChat(model);
-			logger.info("ShikuKeywordFilter receiverId111111");
-			return null;
-		}
-		String[] tempCount2 = body.split("gong");
-		if (tempCount2 != null && tempCount2.length > 3) {
-//				refreshInfoLastChat(model);
-			logger.info("ShikuKeywordFilter receiverId111111");
-			return null;
-		}
 		int contentType=0;
 		contentType=bodyObj.getIntValue("type");
 		//已经过滤过了  即返回
-		if(1==bodyObj.getIntValue("filter"))
+		if (1 == bodyObj.getIntValue("filter")) {
 			return packet;
+		}
 		//过滤群聊的已读回执
 		/*if(StanzaType.groupchat==packet.getType()&&26==type)
 			return null;*/
-		if(ShikuConfigBean.shikuMsgSendTime==1)
-			setNewTimeSend(packet, body, bodyObj);
-		
-		if(0==ShikuConfigBean.OPENKEYWORD_VAL)
+
+		if (0 == ShikuConfigBean.OPENKEYWORD_VAL) {
 			return packet;
+		}
 		
 		String content=null;
-		
-		if(contentType!=1)
+
+		if (contentType != 1) {
+
 			return packet;
+		}
 		content=bodyObj.getString("content");
-		if(content==null)
+		if (content == null) {
+
 			return packet;
+		}
 		if(filterKeyWords(content)){
 			if(ShikuConfigBean.isDeBugMode()) {
 				long endTime = System.currentTimeMillis();
@@ -160,8 +154,7 @@ public class ShikuKeywordFilter implements PacketFilterIfc,Configurable{
      * 是否包含指定字符串,不区分大小写 
      * @param source : 原字符串 
      * @param keyword 
-     * @param replacement 
-     * @return 
+     * @return
      */  
 	private boolean contain2(String source, String keyword) {
 		Pattern p = Pattern.compile(source, Pattern.CASE_INSENSITIVE);  
@@ -172,8 +165,9 @@ public class ShikuKeywordFilter implements PacketFilterIfc,Configurable{
 	
 		///设置 timesend 为服务器的时间
 		private Packet setNewTimeSend(Packet copyPacket,String body,JSONObject jsonObj){
-			Long time = System.currentTimeMillis(); 
-			double timeSend=getTimeSend(time);
+//			logger.info("setNewTimeSend filter");
+			Long time = System.currentTimeMillis();
+			Long timeSend=getTimeSend(time);
 			//替换timeSend 成服务器的时间
 			body=replaceTimeSend(timeSend, body, jsonObj);
 			
@@ -208,12 +202,11 @@ public class ShikuKeywordFilter implements PacketFilterIfc,Configurable{
 			return null;
 		}
 	}
-	private double getTimeSend(long ts){
-		double time =(double)ts;
-		DecimalFormat dFormat = new DecimalFormat("#.000");
-		return new Double(dFormat.format(time/1000));
+	private Long getTimeSend(long ts){
+//		DecimalFormat dFormat = new DecimalFormat("#.000");
+		return ts/1000;
 	}
-	private String replaceTimeSend(Double timeSend,String body,JSONObject jsonObj){
+	private String replaceTimeSend(Long timeSend,String body,JSONObject jsonObj){
 		String oldTime=jsonObj.getString("timeSend");
 		if(oldTime==null){
 			return body;

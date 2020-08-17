@@ -38,12 +38,14 @@ public class RedisCallbackHandler extends AuthRepoPlainCallbackHandler{
 		}
 		boolean flag = RedisService.getInstance().authUser(jid.getLocalpart(), pc.getPassword());
 		pc.setVerified(flag);
-		logger.info("auth user {}  result {}",jid.getLocalpart(),flag);
-		if(!flag)
+//		logger.info("auth user getDomain {}，  pc.getPassword() {}",jid.getDomain(),pc.getPassword());
+		if (!flag) {
 			super.handleVerifyPasswordCallback(pc);
+		}
 		if(!pc.isVerified()) {
 			try {
 				String dbPwd=repo.getPassword(jid);
+//				logger.info("handleVerifyPasswordCallback jid {}  dbPwd {},pwd : {}",jid,dbPwd,LoginPassword.encodeFromOldPassword(pc.getPassword()));
 				if(StringUtil.isEmpty(pc.getPassword())) {
 					pc.setVerified(false);
 				}else if(!pc.getPassword().equals(dbPwd)) {
